@@ -42,10 +42,12 @@ module FeatureBase
 
   def self.can_inject?(table_name, *columns)
     array_of_booleans = []
-    array_of_booleans << ActiveRecord::Base.connection.tables.include?(table_name)
-    columns.each do |column|
-      array_of_booleans << ActiveRecord::Base.connection.column_exists?(table_name, column)
+    if ActiveRecord::Base.connection.tables.include?(table_name)
+      array_of_booleans << ActiveRecord::Base.connection.tables.include?(table_name)
+      columns.each do |column|
+        array_of_booleans << ActiveRecord::Base.connection.column_exists?(table_name, column)
+      end
     end
-    !array_of_booleans.include?(false)
+    !array_of_booleans.include?(false) && array_of_booleans.any?
   end
 end
