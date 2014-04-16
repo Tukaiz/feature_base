@@ -1,5 +1,4 @@
 require "feature_base/version"
-require 'pry'
 module FeatureBase
 
   def self.register(app, klass)
