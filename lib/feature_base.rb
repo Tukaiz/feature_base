@@ -22,7 +22,9 @@ module FeatureBase
         permission = Permission.find_or_initialize_by(can: p[:can],
                                                       callback_name: p[:callback_name])
         permission.name = p[:name]
-        permission.feature = feature
+        unless permission.features.include?(feature)
+          permission.features << feature
+        end
         permission.save
       end
     end
