@@ -5,11 +5,18 @@ module FeatureBase
     app.config.tkml_features << klass
   end
 
-  def self.inject_feature_record(name, class_name, description)
+  def self.inject_feature_record(name, class_name, description, dependencies = [])
     if can_inject?("features", "name", "class_name", "description")
       feature = Feature.find_or_initialize_by(class_name: class_name)
       feature.name = name
       feature.description = description
+
+      dependencies.each do |dependency|
+        # make sure dependency exists before adding it to dependencies
+        dependency_feature = Feature.find_by(class_name: dependency)
+        feature.dependencies << dependency_feature.class_name if dependency_feature
+      end
+
       feature.save
     end
   end
