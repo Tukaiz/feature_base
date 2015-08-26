@@ -14,7 +14,7 @@ module FeatureBase
       dependencies.each do |dependency|
         # make sure dependency exists before adding it to dependencies
         dependency_feature = Feature.find_by(class_name: dependency)
-        feature.dependencies << dependency_feature.class_name if dependency_feature
+        feature.dependencies << dependency_feature.class_name if dependency_feature && !feature.dependencies.include?(dependency_feature.class_name)
       end
 
       feature.save
