@@ -6,7 +6,7 @@ module FeatureBase
   end
 
   def self.inject_feature_record(name, class_name, description, dependencies = [])
-    if can_inject?("features", "name", "class_name", "description")
+    if can_inject?("features", "name", "class_name", "description", "dependencies")
       feature = Feature.find_or_initialize_by(class_name: class_name)
       feature.name = name
       feature.description = description
@@ -22,7 +22,7 @@ module FeatureBase
   end
 
   def self.inject_permission_records(klass, permissions)
-    if can_inject?("features", "name", "class_name", "description") &&
+    if can_inject?("features", "name", "class_name", "description", "dependencies") &&
         can_inject?("permissions", "can", "callback_name", "name")
       feature = Feature.find_by(class_name: klass.to_s)
       permissions.each do |p|
